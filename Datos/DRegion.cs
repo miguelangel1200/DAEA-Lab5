@@ -10,17 +10,17 @@ namespace Datos
 {
     public class DRegion
     {
-        private string connectionString= "Data Source=HUGO-PC\\SQLEXPRESS;Initial Catalog=CAVV_MonitoreoViolencia;Integrated Security=True;";
+        private string connectionString= "Data Source=LAB707-07\\SQLEXPRESS02;Initial Catalog=dbproduct;Integrated Security=True;";
 
        
-        public   List<Region> Listar()
+        public   List<Product> Listar()
         {
 
             //Obtengo la conexión
             SqlConnection connection = null;
             SqlParameter param = null;
             SqlCommand command = null;
-            List<Region> regiones = null;
+            List<Product> productos = null;
             try
             {
                 connection = new SqlConnection(connectionString);
@@ -28,7 +28,7 @@ namespace Datos
                 connection.Open();
 
                 //Hago mi consulta
-                command = new SqlCommand("USP_GetRegion", connection);
+                command = new SqlCommand("USP_SeleccionProducto", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 //param = new SqlParameter();
@@ -39,25 +39,25 @@ namespace Datos
                 //command.Parameters.Add(param);
 
                 SqlDataReader reader = command.ExecuteReader();
-                regiones = new List<Region>();
+                productos = new List<Product>();
 
 
                 while (reader.Read())
                 {
 
-                    Region region = new Region();
-                    region.IdRegion = (int)reader["RegionID"];
-                    region.Description = reader["Description"].ToString();
-                    region.Code = reader["Code"].ToString();
+                    Product producto = new Product();
+                    producto.IdProducto = (int)reader["id"];
+                    producto.Nombre = reader["nombre"].ToString();
+                    producto.Precio = Convert.ToDouble(reader["precio"]);
 
-                    regiones.Add(region);
+                    productos.Add(producto);
 
                 }
 
                 connection.Close();
 
                 //Muestro la información
-                return regiones;
+                return productos;
 
 
             }
@@ -71,27 +71,27 @@ namespace Datos
                 connection = null;
                 command = null;
                 param = null;
-                regiones = null;
+                productos = null;
 
             }
 
 
         }
 
-        public void Insertar(Region region)
+        public void Insertar(Product producto)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("USP_InsRegion", connection); // Nombre del procedimiento almacenado
+                    SqlCommand command = new SqlCommand("USP_InsertarProducto", connection); // Nombre del procedimiento almacenado
                     command.CommandType = CommandType.StoredProcedure;
 
                     // Parámetros del procedimiento almacenado                
-                    command.Parameters.AddWithValue("@RegionID", region.IdRegion);
-                    command.Parameters.AddWithValue("@Code", region.Code);
-                    command.Parameters.AddWithValue("@Description", region.Description);
+                    command.Parameters.AddWithValue("@IdProducto", producto.IdProducto);
+                    command.Parameters.AddWithValue("@Nombre", producto.Nombre);
+                    command.Parameters.AddWithValue("@Precio", producto.Precio);
 
                     command.ExecuteNonQuery();
                 }

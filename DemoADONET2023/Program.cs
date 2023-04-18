@@ -16,7 +16,8 @@ namespace DemoADONET2023
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NuevaRegion());
+            //Application.Run(new Menu());
+            Application.Run(new Insertar());
         }
     }
 }

@@ -8,36 +8,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace DemoADONET2023
 {
-    public partial class NuevaRegion : Form
+    public partial class Menu : Form
     {
-        public NuevaRegion()
+        public Menu()
         {
             InitializeComponent();
         }
 
-        private void Grabar_Click(object sender, EventArgs e)
+        private void btnListar_Click(object sender, EventArgs e)
         {
-
             try
             {
-                BRegion negocio = new BRegion();
-                negocio.Insertar(new Entidad.Region
-                {
-                    Code = txtCode.Text,
-                    Description = txtDescription.Text,
-                });
-                MessageBox.Show("Registro exitoso");
+                BProducto negocio = new BProducto();
+                dgvProductos.DataSource = negocio.Listar(txtNombre.Text);
             }
             catch (Exception)
             {
                 MessageBox.Show("Error");
 
             }
-            
-
         }
     }
 }
